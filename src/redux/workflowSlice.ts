@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 export interface NodeConfig {
   id: string;
@@ -27,13 +27,13 @@ export interface EdgeConfig {
 }
 
 const workflowSlice = createSlice({
-  name: 'workflow',
+  name: "workflow",
   initialState,
   reducers: {
     addNode: (state, action: PayloadAction<NodeConfig>) => {
       state.nodes.push(action.payload);
     },
-        setNodes: (state, action: PayloadAction<any[]>) => {
+    setNodes: (state, action: PayloadAction<any[]>) => {
       state.nodes = action.payload;
     },
     addEdge: (state, action: PayloadAction<EdgeConfig>) => {
@@ -50,19 +50,21 @@ const workflowSlice = createSlice({
       if (node) node.config = action.payload.config;
     },
     validateWorkflow: (state) => {
-      const startNodes = state.nodes.filter((n) => n.type === 'Start');
-      const endNodes = state.nodes.filter((n) => n.type === 'End');
+      const startNodes = state.nodes.filter((n) => n.type === "Start");
+      const endNodes = state.nodes.filter((n) => n.type === "End");
       if (startNodes.length > 1 || endNodes.length > 1) {
-        toast.warning('Only one Start and one End node are allowed.');
+        toast.warning("Only one Start and one End node are allowed.");
       }
       for (const node of state.nodes) {
-        if (node.type === 'Webhook' && !node.config?.url) {
+        if (node.type === "Webhook" && !node.config?.url) {
           toast.warning(`Webhook node ${node.id} requires a URL.`);
         }
-        if (node.type === 'Decision') {
+        if (node.type === "Decision") {
           const outgoing = state.edges.filter((e) => e.from === node.id);
           if (outgoing.length !== 2) {
-            toast.warning(`Decision node ${node.id} must have 2 outgoing edges.`);
+            toast.warning(
+              `Decision node ${node.id} must have 2 outgoing edges.`
+            );
           }
         }
       }
@@ -73,7 +75,9 @@ const workflowSlice = createSlice({
         if (visited.has(id)) return false;
         visited.add(id);
         stack.add(id);
-        const children = state.edges.filter((e) => e.from === id).map((e) => e.to);
+        const children = state.edges
+          .filter((e) => e.from === id)
+          .map((e) => e.to);
         for (const child of children) {
           if (hasCycle(child)) return true;
         }
@@ -90,7 +94,13 @@ const workflowSlice = createSlice({
   },
 });
 
-export const { addNode, addEdge, selectNode, updateNodeConfig, validateWorkflow, setNodes } =
-  workflowSlice.actions;
+export const {
+  addNode,
+  addEdge,
+  selectNode,
+  updateNodeConfig,
+  validateWorkflow,
+  setNodes,
+} = workflowSlice.actions;
 
 export default workflowSlice.reducer;
