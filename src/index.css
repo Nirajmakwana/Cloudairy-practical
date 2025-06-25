@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: white;
+  padding: 16px;
+  width: 250px;
+  height: 100%;
+  border-left: 1px solid #ccc;
+}
+input {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.cursorBtn {
+  cursor: pointer;
+}

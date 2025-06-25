@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import Canvas from './components/Canvas';
+import NodeSidebar from '../src/components/NodeConfigPanel';
+        import { ToastContainer, toast } from 'react-toastify';
 
-function App() {
+import './index.css';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <ToastContainer/>
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <NodeSidebar />
+        <Canvas />
+      </div>
+    </Provider>
   );
-}
+};
 
 export default App;
